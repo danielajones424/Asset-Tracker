@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Pure shared domain: ZERO package references (Fable compatibility enforced by CI fable-check job) -->
+  <ItemGroup>
+    <Compile Include="Domain.fs" />
+    <Compile Include="Validation.fs" />
+    <Compile Include="Dtos.fs" />
+  </ItemGroup>
+</Project>

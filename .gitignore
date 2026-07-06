@@ -1,0 +1,12 @@
+bin/
+obj/
+node_modules/
+dist/
+.fable/
+*.fs.js
+.env
+*.user
+.terraform/
+*.tfstate*
+coverage/
+TestResults/

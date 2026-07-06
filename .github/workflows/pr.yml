@@ -1,0 +1,58 @@
+name: PR
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Tool restore
+        run: dotnet tool restore
+      - name: Format check
+        run: dotnet fantomas --check src tests
+      - name: Build (warnings as errors)
+        run: dotnet build AssetTracker.sln -warnaserror -c Release
+      - name: Unit tests
+        run: dotnet test AssetTracker.sln -c Release --no-build
+      # ponytail: coverage gate (≥80% domain/app) lands when application layer exists
+
+  fable-check:
+    # Enforces Shared purity: must compile under Fable (docs/06 §2, design review)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Tool restore
+        run: dotnet tool restore
+      - name: Client npm install
+        run: npm ci --prefix src/Client || npm install --prefix src/Client
+      - name: Fable compile client (includes Shared)
+        run: dotnet fable src/Client --noCache
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Vulnerable dependency check
+        run: |
+          dotnet restore AssetTracker.sln
+          dotnet list AssetTracker.sln package --vulnerable --include-transitive | tee vuln.txt
+          ! grep -q "has the following vulnerable packages" vuln.txt

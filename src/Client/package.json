@@ -1,0 +1,17 @@
+{
+  "name": "assettrack-client",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "dotnet fable watch . --run vite",
+    "build": "dotnet fable . && vite build",
+    "clean": "dotnet fable clean --yes"
+  },
+  "dependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
