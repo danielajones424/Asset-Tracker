@@ -19,13 +19,17 @@ module Validation =
 
     let private required name (value: string) =
         if System.String.IsNullOrWhiteSpace value then
-            Some { Field = name; Message = "is required" }
+            Some
+                { Field = name
+                  Message = "is required" }
         else
             None
 
     let private maxLen name (max: int) (value: string) =
-        if value <> null && value.Length > max then
-            Some { Field = name; Message = $"must be at most {max} characters" }
+        if not (System.String.IsNullOrEmpty value) && value.Length > max then
+            Some
+                { Field = name
+                  Message = $"must be at most {max} characters" }
         else
             None
 
@@ -41,5 +45,7 @@ module Validation =
               a.MacAddresses
               |> List.filter (isValidMac >> not)
               |> List.map (fun m ->
-                  Some { Field = "macAddresses"; Message = $"'{m}' is not a valid MAC address" }) ]
+                  Some
+                      { Field = "macAddresses"
+                        Message = $"'{m}' is not a valid MAC address" }) ]
         |> List.choose id
