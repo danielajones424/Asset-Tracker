@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Wireframes — Asset Tracking System</title>
+<style>
+  /* Low-fidelity wireframes: structure and hierarchy only. Visual direction (doc note below)
+     is applied later; grayscale keeps review focused on layout and flow. */
+  :root{
+    --ink:#1d232a; --ink-2:#5b6470; --ink-3:#98a1ac;
+    --paper:#f4f5f7; --panel:#ffffff; --line:rgba(29,35,42,.14); --line-soft:rgba(29,35,42,.07);
+    --inset:#eceef1; --accent:#2f5d3a; /* single accent: olive — flightline world */
+    --warn:#a06a1f; --bad:#8f3b2e;
+  }
+  *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);
+    font:14px/1.5 "Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;padding:32px}
+  h1{font-size:22px;font-weight:600;letter-spacing:-.02em}
+  h2{font-size:15px;font-weight:600;margin:48px 0 6px}
+  .note{color:var(--ink-2);max-width:72ch;margin:0 0 16px}
+  .frame{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    max-width:1060px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  /* app chrome */
+  .top{display:flex;align-items:center;gap:16px;padding:10px 16px;border-bottom:1px solid var(--line-soft)}
+  .logo{font-weight:600;font-size:13px;letter-spacing:.06em}
+  .logo span{color:var(--accent)}
+  .search{flex:1;max-width:340px;background:var(--inset);border:1px solid var(--line-soft);
+    border-radius:6px;padding:5px 10px;color:var(--ink-3);font-size:13px}
+  .who{margin-left:auto;font-size:12px;color:var(--ink-2)}
+  .who b{color:var(--ink);font-weight:600}
+  .body{display:flex;min-height:420px}
+  nav{width:196px;border-right:1px solid var(--line-soft);padding:12px 8px;font-size:13px}
+  nav a{display:block;padding:7px 10px;border-radius:6px;color:var(--ink-2);text-decoration:none}
+  nav a.on{background:var(--inset);color:var(--ink);font-weight:600}
+  main{flex:1;padding:20px 24px}
+  .ph1{font-size:18px;font-weight:600;letter-spacing:-.01em;margin:0 0 2px}
+  .psub{font-size:12px;color:var(--ink-3);margin:0 0 18px}
+  /* primitives */
+  .btn{display:inline-block;padding:7px 14px;border-radius:6px;font-size:13px;font-weight:500;
+    border:1px solid var(--line);background:var(--panel)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;
+    border:1px solid var(--line);color:var(--ink-2)}
+  .chip.ok{color:var(--accent);border-color:var(--accent)}
+  .chip.warn{color:var(--warn);border-color:var(--warn)}
+  .chip.bad{color:var(--bad);border-color:var(--bad)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);
+    text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+  td.num{font-variant-numeric:tabular-nums}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .card{border:1px solid var(--line-soft);border-radius:8px;padding:14px}
+  .card .k{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3)}
+  .card .v{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .card .d{font-size:12px;color:var(--ink-2)}
+  .drop{border:2px dashed var(--line);border-radius:8px;padding:36px;text-align:center;color:var(--ink-2)}
+  /* pipeline rail — signature element: document status as a physical conveyor */
+  .rail{display:flex;align-items:center;gap:0;margin:14px 0 4px;font-size:11px;color:var(--ink-3)}
+  .rail .st{display:flex;align-items:center;gap:6px}
+  .rail .dot{width:10px;height:10px;border-radius:99px;border:2px solid var(--line);background:#fff}
+  .rail .st.done .dot{background:var(--accent);border-color:var(--accent)}
+  .rail .st.now .dot{border-color:var(--accent);box-shadow:0 0 0 3px rgba(47,93,58,.18)}
+  .rail .st.done, .rail .st.now{color:var(--ink)}
+  .rail .bar{flex:1;height:2px;background:var(--line-soft);margin:0 8px;min-width:24px}
+  .rail .bar.done{background:var(--accent)}
+  .split{display:flex;gap:20px}
+  .split .doc{flex:1;background:var(--inset);border:1px solid var(--line-soft);border-radius:8px;
+    min-height:300px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:12px}
+  .split .fields{width:46%}
+  .fld{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+  .fld label{width:110px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3)}
+  .fld input{flex:1;background:var(--inset);border:1px solid var(--line-soft);border-radius:5px;padding:5px 8px;font-size:13px}
+  .fld .conf{font-size:11px;font-variant-numeric:tabular-nums;width:38px;text-align:right}
+  .fld.low input{border-color:var(--warn);background:#faf4e8}
+  .fld.low .conf{color:var(--warn);font-weight:600}
+  .annot{font-size:12px;color:var(--ink-2);border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:10px 0}
+  .row-actions{display:flex;gap:8px;margin-top:14px}
+  .toolbar{display:flex;gap:8px;margin-bottom:12px;align-items:center}
+  .toolbar .filter{font-size:12px;border:1px solid var(--line-soft);border-radius:6px;padding:4px 10px;color:var(--ink-2);background:var(--panel)}
+</style>
+</head>
+<body>
+
+<h1>Wireframes — Asset Tracking System</h1>
+<p class="note">Low-fidelity: grayscale + one olive accent, review layout and flow, not final visuals.
+Both portals are one SPA with role-gated navigation (doc 06). Signature element: the <b>pipeline rail</b> —
+a document's journey (scan → parse → extract → validate → done) rendered as a conveyor, reused everywhere a
+document's state appears. Density: workbench-tight (14px body, 8px grid), because custodians work through lists, not brochures.</p>
+
+<!-- ============ CUSTOMER: UPLOAD ============ -->
+<h2>C1 · Customer Portal — Upload &amp; Document History (SSgt Delgado's home screen)</h2>
+<p class="note">Focal point: the drop zone. Everything else is demoted. Status is glanceable via the rail per row.</p>
+<div class="frame">
+  <div class="top">
+    <div class="logo">ASSET<span>TRACK</span></div>
+    <div class="search">Search serial, tag, model…</div>
+    <div class="who"><b>SSgt M. Delgado</b> · Custodian · 421st Maintenance Unit</div>
+  </div>
+  <div class="body">
+    <nav>
+      <a class="on" href="#">Upload documents</a>
+      <a href="#">My unit's assets</a>
+      <a href="#">Document history</a>
+      <a href="#">Profile</a>
+    </nav>
+    <main>
+      <p class="ph1">Upload asset documents</p>
+      <p class="psub">421st MXU · PDF up to 25 MB · scanned automatically</p>
+      <div class="drop">Drag PDFs here or <b>browse files</b></div>
+      <h2 style="margin-top:28px">Recent uploads</h2>
+      <table>
+        <tr><th>Document</th><th>Uploaded</th><th style="width:44%">Pipeline</th><th>Outcome</th></tr>
+        <tr>
+          <td>hand-receipt-jun.pdf</td><td class="num">06 Jul 09:12</td>
+          <td><div class="rail">
+            <span class="st done"><span class="dot"></span>Scan</span><span class="bar done"></span>
+            <span class="st done"><span class="dot"></span>Parse</span><span class="bar done"></span>
+            <span class="st now"><span class="dot"></span>Extract</span><span class="bar"></span>
+            <span class="st"><span class="dot"></span>Validate</span><span class="bar"></span>
+            <span class="st"><span class="dot"></span>Done</span></div></td>
+          <td><span class="chip">processing</span></td>
+        </tr>
+        <tr>
+          <td>laptop-issue-may.pdf</td><td class="num">28 Jun 14:02</td>
+          <td><div class="rail">
+            <span class="st done"><span class="dot"></span>Scan</span><span class="bar done"></span>
+            <span class="st done"><span class="dot"></span>Parse</span><span class="bar done"></span>
+            <span class="st done"><span class="dot"></span>Extract</span><span class="bar done"></span>
+            <span class="st done"><span class="dot"></span>Validate</span><span class="bar done"></span>
+            <span class="st done"><span class="dot"></span>Done</span></div></td>
+          <td><span class="chip ok">46 created · 4 in review</span></td>
+        </tr>
+        <tr>
+          <td>scan-004.pdf</td><td class="num">21 Jun 08:40</td>
+          <td><div class="rail"><span class="st done"><span class="dot"></span>Scan</span>
+            <span class="bar done"></span><span class="st"><span class="dot"></span>Parse</span></div></td>
+          <td><span class="chip bad">failed — unreadable scan</span></td>
+        </tr>
+      </table>
+      <div class="annot">Failure reasons are always human-readable (FR-22). Clicking a row → document detail
+      with per-candidate outcomes (US-B3).</div>
+    </main>
+  </div>
+</div>
+
+<!-- ============ CUSTOMER: ASSETS ============ -->
+<h2>C2 · Customer Portal — Unit Asset List</h2>
+<p class="note">Read-fast table; custodians edit inline-allowed fields from the detail drawer. Members see this same screen minus edit affordances (hidden, not disabled — US-A3).</p>
+<div class="frame">
+  <div class="top"><div class="logo">ASSET<span>TRACK</span></div>
+    <div class="search">Search serial, tag, model…</div>
+    <div class="who"><b>SSgt M. Delgado</b> · Custodian · 421st MXU</div></div>
+  <div class="body">
+    <nav><a href="#">Upload documents</a><a class="on" href="#">My unit's assets</a>
+      <a href="#">Document history</a><a href="#">Profile</a></nav>
+    <main>
+      <p class="ph1">Assets — 421st Maintenance Unit</p>
+      <p class="psub">312 assets</p>
+      <div class="toolbar">
+        <span class="filter">Type: All ▾</span><span class="filter">Status: All ▾</span>
+        <span class="filter">Sort: Updated ▾</span>
+        <span style="margin-left:auto"><span class="btn">Export</span> <span class="btn primary">+ New asset</span></span>
+      </div>
+      <table>
+        <tr><th>Tag</th><th>Serial</th><th>Type</th><th>Make / model</th><th>Assigned to</th><th>Status</th></tr>
+        <tr><td class="num">AF-88214</td><td class="num">5CD1234XYZ</td><td>Laptop</td><td>Dell Latitude 5540</td><td>Sgt Riley</td><td><span class="chip ok">in use</span></td></tr>
+        <tr><td class="num">AF-88215</td><td class="num">SN-99A7Q</td><td>Phone</td><td>iPhone 15</td><td>Capt Moore</td><td><span class="chip ok">in use</span></td></tr>
+        <tr><td class="num">AF-87102</td><td class="num">MXL8341K</td><td>Desktop</td><td>HP EliteDesk 800</td><td>Ops floor 2</td><td><span class="chip warn">in repair</span></td></tr>
+        <tr><td class="num">AF-86440</td><td class="num">C02FK55Q</td><td>Laptop</td><td>MacBook Pro 14</td><td>—</td><td><span class="chip">in storage</span></td></tr>
+      </table>
+      <div class="annot">Row click → detail drawer: all fields, status transition button, full asset history
+      timeline (FR-31), linked source documents. Transfer request lives in the drawer (US-C3).</div>
+    </main>
+  </div>
+</div>
+
+<!-- ============ ADMIN: DASHBOARD ============ -->
+<h2>A1 · Admin Portal — System Dashboard (Dana Whitfield)</h2>
+<p class="note">Focal point: the review queue count — it's the admin's actionable work. Counts are entry points, not decoration; each drills into a filtered list.</p>
+<div class="frame">
+  <div class="top"><div class="logo">ASSET<span>TRACK</span> <span class="chip" style="margin-left:8px">ADMIN</span></div>
+    <div class="search">Search anything…</div>
+    <div class="who"><b>D. Whitfield</b> · System Admin</div></div>
+  <div class="body">
+    <nav>
+      <a class="on" href="#">Dashboard</a><a href="#">Review queue</a><a href="#">Assets</a>
+      <a href="#">Documents</a><a href="#">Squadrons &amp; units</a><a href="#">Users</a>
+      <a href="#">Audit log</a><a href="#">Reports</a><a href="#">Import / export</a>
+    </nav>
+    <main>
+      <p class="ph1">Dashboard</p>
+      <p class="psub">All squadrons · updated 30 s ago</p>
+      <div class="cards">
+        <div class="card" style="border-color:var(--warn)"><div class="k">Needs review</div>
+          <div class="v">17</div><div class="d">oldest 2 d — go to queue →</div></div>
+        <div class="card"><div class="k">Assets</div><div class="v">96,412</div><div class="d">across 4 squadrons</div></div>
+        <div class="card"><div class="k">Docs this week</div><div class="v">241</div><div class="d">auto-accept 83%</div></div>
+        <div class="card"><div class="k">Pipeline failures</div><div class="v">3</div><div class="d">last 7 days</div></div>
+      </div>
+      <div class="split">
+        <div style="flex:1">
+          <h2 style="margin:0 0 8px">Assets by squadron</h2>
+          <table>
+            <tr><th>Squadron</th><th>Units</th><th>Assets</th><th>In repair</th><th>Stale &gt;1 y</th></tr>
+            <tr><td>52d Comm</td><td class="num">6</td><td class="num">31,208</td><td class="num">412</td><td class="num">1,190</td></tr>
+            <tr><td>310th Ops</td><td class="num">4</td><td class="num">22,977</td><td class="num">203</td><td class="num">844</td></tr>
+          </table>
+        </div>
+        <div style="flex:1">
+          <h2 style="margin:0 0 8px">Recent activity</h2>
+          <table>
+            <tr><td class="num">09:14</td><td>delgado.m uploaded hand-receipt-jun.pdf</td></tr>
+            <tr><td class="num">09:02</td><td>okafor.j approved transfer AF-86011 → 423d</td></tr>
+            <tr><td class="num">08:55</td><td>whitfield.d accepted 4 candidates (doc 8812)</td></tr>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ============ ADMIN: REVIEW ============ -->
+<h2>A2 · Admin Portal — Extraction Review (the core admin loop)</h2>
+<p class="note">Side-by-side: source PDF left, extracted fields right (FR-27). Per-field confidence shown as numbers;
+low-confidence fields pre-highlighted so the eye lands where correction is likely. Keyboard-first: accept ⏎, next ↓.</p>
+<div class="frame">
+  <div class="top"><div class="logo">ASSET<span>TRACK</span> <span class="chip" style="margin-left:8px">ADMIN</span></div>
+    <div class="search">Search anything…</div>
+    <div class="who"><b>D. Whitfield</b> · System Admin</div></div>
+  <div class="body">
+    <nav><a href="#">Dashboard</a><a class="on" href="#">Review queue</a><a href="#">Assets</a>
+      <a href="#">Documents</a><a href="#">Squadrons &amp; units</a><a href="#">Users</a>
+      <a href="#">Audit log</a><a href="#">Reports</a><a href="#">Import / export</a></nav>
+    <main>
+      <p class="ph1">Review 3 of 17 · hand-receipt-jun.pdf · row 12</p>
+      <p class="psub">421st MXU · uploaded by delgado.m · flags: low_confidence, duplicate?</p>
+      <div class="split">
+        <div class="doc">[ PDF viewer — source page, extraction region highlighted ]</div>
+        <div class="fields">
+          <div class="fld"><label>Asset tag</label><input value="AF-88301"><span class="conf">.97</span></div>
+          <div class="fld low"><label>Serial</label><input value="5CD1234XY7"><span class="conf">.61</span></div>
+          <div class="fld"><label>Type</label><input value="Laptop"><span class="conf">.99</span></div>
+          <div class="fld"><label>Make/model</label><input value="Dell Latitude 5540"><span class="conf">.95</span></div>
+          <div class="fld low"><label>Assigned to</label><input value=""><span class="conf">—</span></div>
+          <div class="annot" style="border-color:var(--warn)">Possible duplicate: serial ≈ <b>5CD1234XYZ</b>
+            (AF-88214, in use, 421st MXU) — <a href="#">compare</a></div>
+          <div class="row-actions">
+            <span class="btn primary">Accept ⏎</span><span class="btn">Merge with AF-88214</span>
+            <span class="btn">Reject</span><span class="btn" style="margin-left:auto">Skip ↓</span>
+          </div>
+        </div>
+      </div>
+      <div class="annot">Corrections are stored for parser tuning (FR-29). Every decision writes audit + history.</div>
+    </main>
+  </div>
+</div>
+
+<!-- ============ ADMIN: AUDIT ============ -->
+<h2>A3 · Admin Portal — Audit Log</h2>
+<div class="frame">
+  <div class="top"><div class="logo">ASSET<span>TRACK</span> <span class="chip" style="margin-left:8px">ADMIN</span></div>
+    <div class="search">Search anything…</div>
+    <div class="who"><b>D. Whitfield</b> · System Admin</div></div>
+  <div class="body">
+    <nav><a href="#">Dashboard</a><a href="#">Review queue</a><a href="#">Assets</a><a href="#">Documents</a>
+      <a href="#">Squadrons &amp; units</a><a href="#">Users</a><a class="on" href="#">Audit log</a>
+      <a href="#">Reports</a><a href="#">Import / export</a></nav>
+    <main>
+      <p class="ph1">Audit log</p>
+      <p class="psub">append-only · 7-year retention</p>
+      <div class="toolbar">
+        <span class="filter">Actor ▾</span><span class="filter">Action ▾</span>
+        <span class="filter">Entity ▾</span><span class="filter">Date range ▾</span>
+        <span class="btn" style="margin-left:auto">Export (audited)</span>
+      </div>
+      <table>
+        <tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Detail</th></tr>
+        <tr><td class="num">06 Jul 09:02</td><td>okafor.j</td><td>transfer.approve</td><td>asset AF-86011</td><td>421st → 423d</td></tr>
+        <tr><td class="num">06 Jul 08:55</td><td>whitfield.d</td><td>candidate.accept</td><td>doc 8812/r4</td><td>serial corrected</td></tr>
+        <tr><td class="num">06 Jul 08:41</td><td>delgado.m</td><td>asset.update</td><td>asset AF-87102</td><td>status: in_use → in_repair</td></tr>
+        <tr><td class="num">06 Jul 08:12</td><td>—system—</td><td>auth.denied</td><td>cert *…9921</td><td>unprovisioned certificate</td></tr>
+      </table>
+    </main>
+  </div>
+</div>
+
+<p class="note" style="margin-top:40px"><b>Deferred to visual design phase:</b> final typeface (candidate: Public Sans —
+US gov open-source, fits domain), dark mode, empty/loading/error state art, responsive breakpoints
+(tables collapse to cards &lt; 720px), WCAG 2.1 AA contrast audit.</p>
+</body>
+</html>
