@@ -1,12 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Fable compiles Feliz/Fable.Elmish source directly (not just their binaries), so
+         the repo-wide <Nullable>enable</Nullable> (Directory.Build.props) is applied to
+         their code too. Those packages predate strict nullness checking and fail to
+         compile under it ("constraints 'null' and 'not null' are inconsistent" in
+         Feliz's React.fs). Nullable is a first-party code-quality gate, not something
+         we can retrofit onto third-party sources, so it's disabled for this project only. -->
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fable.Core" Version="4.*" />
-    <PackageReference Include="Feliz" Version="2.*" />
-    <PackageReference Include="Fable.Elmish" Version="4.*" />
-    <PackageReference Include="Feliz.UseElmish" Version="2.*" />
+    <PackageReference Include="Fable.Core" Version="5.*" />
+    <PackageReference Include="Feliz" Version="3.*" />
+    <PackageReference Include="Fable.Elmish" Version="5.*" />
+    <PackageReference Include="Feliz.UseElmish" Version="5.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shared\Shared.fsproj" />

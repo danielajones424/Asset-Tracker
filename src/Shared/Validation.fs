@@ -5,7 +5,8 @@ module Validation =
 
     type FieldError = { Field: string; Message: string }
 
-    let private isMacChar c = System.Char.IsAsciiHexDigit c
+    let private isMacChar c =
+        (c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')
 
     /// Accepts AA:BB:CC:DD:EE:FF or AA-BB-CC-DD-EE-FF (case-insensitive)
     let isValidMac (s: string) =
@@ -16,6 +17,12 @@ module Validation =
 
         parts.Length = 6
         && parts |> Array.forall (fun p -> p.Length = 2 && p |> Seq.forall isMacChar)
+
+    /// Canonical storage form: uppercase, colon-separated. Call only on values
+    /// that passed isValidMac.
+    let normalizeMac (s: string) =
+        let sep = if s.Contains ':' then ':' else '-'
+        s.Split sep |> Array.map (fun p -> p.ToUpperInvariant()) |> String.concat ":"
 
     let private required name (value: string) =
         if System.String.IsNullOrWhiteSpace value then
