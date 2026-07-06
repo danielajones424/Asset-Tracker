@@ -8,6 +8,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Client", "src\Client\Client
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Shared.Tests", "tests\Shared.Tests\Shared.Tests.fsproj", "{1A5C6E01-0004-4B62-9D01-6E2B3C4D5E04}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Migrate", "db\Migrate\Migrate.fsproj", "{1A5C6E01-0005-4B62-9D01-6E2B3C4D5E05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{1A5C6E01-0004-4B62-9D01-6E2B3C4D5E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A5C6E01-0004-4B62-9D01-6E2B3C4D5E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A5C6E01-0004-4B62-9D01-6E2B3C4D5E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A5C6E01-0005-4B62-9D01-6E2B3C4D5E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A5C6E01-0005-4B62-9D01-6E2B3C4D5E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A5C6E01-0005-4B62-9D01-6E2B3C4D5E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A5C6E01-0005-4B62-9D01-6E2B3C4D5E05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
