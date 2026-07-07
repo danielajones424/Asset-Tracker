@@ -16,9 +16,11 @@ Planning approved; Milestone 0 in progress. `main` @ 7 commits, working tree cle
 
 ## Immediate next steps (in order)
 
-1. ~~Local toolchain + first build~~ done 2026-07-06 (see above).
-2. GitHub push: `origin` now points at `danielajones424/asset-tracker`; needs Daniel to push (2 commits ahead) or provide auth.
-3. Then: `feature/aws-auth` (CAC/mTLS spike — top risk, doc 18; OQ1 may limit how far the spike can go) and `feature/asset-crud` (manual entry, backlog #9/#13 — unblocked).
+1. ~~Local toolchain + first build~~ done 2026-07-06.
+2. ~~Asset CRUD API~~ done 2026-07-06: `feature/asset-crud-api` squash-merged (backlog #9 API + #13 dup-probe endpoint). Endpoints: GET/POST `/api/v1/assets`, GET/PUT `/assets/{id}`, POST `/assets/{id}/status`, GET `/assets/check-duplicate`. Scoped queries per role, field-level history in-transaction, optimistic concurrency on `updatedAt`, CSRF header guard, ORDER-BY whitelist. Dev-auth seam (header principal, Development-only) unblocks work until CAC lands; test proves headers alone never authenticate. 33 tests green locally; Postgres integration suite is env-gated (`TEST_DATABASE_URL`) and wired into CI (postgres:16 service). CI also fixed: .NET 10 SDK required for Fable 5 tool (net10.0 payload). Local `feature/asset-crud-api` branch kept — origin has it and sandbox can't push/delete remote.
+3. GitHub push: needs Daniel (sandbox has no git credentials). main is ahead several commits.
+4. Next feature: `feature/asset-crud-ui` (#13 entry form, Fable/Feliz — consumes dup probe + shared validation) or `feature/aws-auth` spike (top risk; OQ1 may cap progress). UI recommended while OQ1 is open.
+5. Server run config for dev: `ConnectionStrings__Default` + `ASPNETCORE_ENVIRONMENT=Development` + `AssetTracker__DevAuth=true`; dev principal via `X-Dev-UserId`/`X-Dev-Role`/`X-Dev-UnitId` headers (user row must exist in `app_user` for history FK).
 
 ## Open items needing Daniel/sponsor
 
