@@ -33,10 +33,11 @@ let private seed (ds: NpgsqlDataSource) =
 
         use cmd =
             new NpgsqlCommand(
-                "INSERT INTO squadron (id, name) VALUES (@sq, 'TestSq'); \
-                 INSERT INTO unit (id, squadron_id, name) VALUES (@u1, @sq, 'Unit1'), (@u2, @sq, 'Unit2'); \
-                 INSERT INTO app_user (id, edipi, display_name, role, unit_id) \
-                   VALUES (@usr, '1234567890', 'Custodian One', 'unit_custodian', @u1)",
+                "INSERT INTO squadron (id, name, code) VALUES (@sq, 'TestSq', 'TSQ'); \
+                 INSERT INTO unit (id, squadron_id, name, code) \
+                   VALUES (@u1, @sq, 'Unit1', 'U1'), (@u2, @sq, 'Unit2', 'U2'); \
+                 INSERT INTO app_user (id, edipi, cert_subject_dn, display_name, role, unit_id) \
+                   VALUES (@usr, '1234567890', 'CN=TEST.CUSTODIAN.1234567890', 'Custodian One', 'unit_custodian', @u1)",
                 conn
             )
 
