@@ -1,8 +1,10 @@
 # Session Handoff — Project Status
 
-**Updated:** 2026-07-06 · read this first in a new session, then `docs/20-design-review.md`.
+**Updated:** 2026-07-07 · read this first in a new session, then `docs/20-design-review.md`.
 
 ## Where we are
+
+**MILESTONE 2026-07-07: first end-to-end asset saved.** Daniel's Mac runs the full stack: Postgres 16 (brew, via `pg_ctl` — brew services launchctl is flaky), migrations via dbup runner, dev-seed applied, API with dev auth, vite client → asset created through the form with history row. Bugs found and fixed on the way (each on a bugfix branch, squash-merged): Fable.Fetch throws on non-2xx (→ GlobalFetch), integration-test seed missing NOT NULL columns, Thoth `Encode.decimal` emits a JSON *string* but STJ expects a number (acquisitionCost 500), and a proper error handler (malformed body → 400 problem+json, unexpected → 500 with correlation id, never a stack trace). **Debt: add a client↔server DTO round-trip serialization test — the decimal bug lived exactly in the gap between client coders and server options.**
 
 Planning approved; Milestone 0 in progress. `main` @ 7 commits, working tree clean. Remote `origin` configured (git@github.com:danielajones424/asset-tracker.git) but unpushed — sandbox has no SSH credentials; push must happen from Daniel's machine or via PAT.
 
