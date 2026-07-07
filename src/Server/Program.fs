@@ -62,6 +62,36 @@ let buildApp (devAuthEnabled: bool) (dataSource: NpgsqlDataSource option) : Http
     else
         correlationMiddleware >=> core
 
+/// Unhandled exceptions become problem+json with the correlation id — never a
+/// stack trace on the wire (docs/10 §1, docs/17). Malformed bodies are the
+/// client's fault: 400, not 500.
+let errorHandler (ex: exn) (logger: Microsoft.Extensions.Logging.ILogger) : HttpHandler =
+    Microsoft.Extensions.Logging.LoggerExtensions.LogError(logger, ex, "Unhandled exception")
+
+    let status, title, detail =
+        match ex with
+        | :? System.Text.Json.JsonException -> 400, "Malformed request body", Some ex.Message
+        | _ -> 500, "Internal server error", None
+
+    fun next ctx ->
+        let problem: AssetTracker.Shared.Dtos.ProblemDetailsDto =
+            { Type = "about:blank"
+              Title = title
+              Status = status
+              Detail = detail
+              Errors = []
+              CorrelationId =
+                match ctx.Items.TryGetValue "CorrelationId" with
+                | true, (:? string as c) -> c
+                | _ -> "" }
+
+        (clearResponse
+         >=> setStatusCode status
+         >=> setHttpHeader "Content-Type" "application/problem+json"
+         >=> json problem)
+            next
+            ctx
+
 [<EntryPoint>]
 let main args =
     Log.Logger <-
@@ -97,6 +127,7 @@ let main args =
 
         let app = builder.Build()
         app.UseSerilogRequestLogging() |> ignore
+        app.UseGiraffeErrorHandler(errorHandler) |> ignore
         app.UseGiraffe(buildApp devAuthEnabled dataSource)
         app.Run()
         0

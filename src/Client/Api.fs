@@ -101,7 +101,9 @@ let encodeAssetWrite (w: Dtos.AssetWriteDto) : string =
           "assignedTo", optOr Encode.string w.AssignedTo
           "location", optOr Encode.string w.Location
           "acquisitionDate", optOr (dateToWire >> Encode.string) w.AcquisitionDate
-          "acquisitionCost", optOr Encode.decimal w.AcquisitionCost
+          // NOT Encode.decimal — Thoth encodes decimals as JSON strings; the server
+          // (STJ) expects a number. float is exact for numeric(12,2) magnitudes.
+          "acquisitionCost", optOr (float >> Encode.float) w.AcquisitionCost
           "warrantyExpiry", optOr (dateToWire >> Encode.string) w.WarrantyExpiry
           "notes", optOr Encode.string w.Notes
           "updatedAt", Encode.nil ]
