@@ -10,3 +10,6 @@ dist/
 *.tfstate*
 coverage/
 TestResults/
+fable_modules/
+.env.local
+Fable.lock

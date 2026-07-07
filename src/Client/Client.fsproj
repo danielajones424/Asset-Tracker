@@ -9,10 +9,14 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api.fs" />
+    <Compile Include="AssetForm.fs" />
     <Compile Include="App.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Core" Version="5.*" />
+    <PackageReference Include="Fable.Fetch" Version="2.*" />
+    <PackageReference Include="Thoth.Json" Version="10.*" />
     <PackageReference Include="Feliz" Version="3.*" />
     <PackageReference Include="Fable.Elmish" Version="5.*" />
     <PackageReference Include="Feliz.UseElmish" Version="5.*" />

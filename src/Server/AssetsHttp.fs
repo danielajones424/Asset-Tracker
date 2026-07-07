@@ -289,11 +289,26 @@ let changeStatus (ds: NpgsqlDataSource) (id: Guid) : HttpHandler =
                         | Error e -> return! writeError e next ctx
                     })))
 
+/// SPA bootstrap (doc 10): who am I, what role, what scope
+let session: HttpHandler =
+    requireAuth (fun p ->
+        let (UserId uid) = p.UserId
+
+        let dto: Dtos.SessionDto =
+            { UserId = uid
+              DisplayName = p.DisplayName
+              Role = p.Role
+              UnitId = p.UnitId |> Option.map (fun (UnitId u) -> u)
+              SquadronId = p.SquadronId |> Option.map (fun (SquadronId s) -> s) }
+
+        json dto)
+
 let routes (ds: NpgsqlDataSource) : HttpHandler =
     subRoute
         "/api/v1"
         (choose
-            [ GET >=> route "/assets" >=> list ds
+            [ GET >=> route "/session" >=> session
+              GET >=> route "/assets" >=> list ds
               GET >=> route "/assets/check-duplicate" >=> checkDuplicate ds
               GET >=> routef "/assets/%O" (getById ds)
               POST >=> route "/assets" >=> create ds
