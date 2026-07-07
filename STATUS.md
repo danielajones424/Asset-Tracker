@@ -18,9 +18,11 @@ Planning approved; Milestone 0 in progress. `main` @ 7 commits, working tree cle
 
 1. ~~Local toolchain + first build~~ done 2026-07-06.
 2. ~~Asset CRUD API~~ done 2026-07-06: `feature/asset-crud-api` squash-merged (backlog #9 API + #13 dup-probe endpoint). Endpoints: GET/POST `/api/v1/assets`, GET/PUT `/assets/{id}`, POST `/assets/{id}/status`, GET `/assets/check-duplicate`. Scoped queries per role, field-level history in-transaction, optimistic concurrency on `updatedAt`, CSRF header guard, ORDER-BY whitelist. Dev-auth seam (header principal, Development-only) unblocks work until CAC lands; test proves headers alone never authenticate. 33 tests green locally; Postgres integration suite is env-gated (`TEST_DATABASE_URL`) and wired into CI (postgres:16 service). CI also fixed: .NET 10 SDK required for Fable 5 tool (net10.0 payload). Local `feature/asset-crud-api` branch kept — origin has it and sandbox can't push/delete remote.
-3. GitHub push: needs Daniel (sandbox has no git credentials). main is ahead several commits.
-4. Next feature: `feature/asset-crud-ui` (#13 entry form, Fable/Feliz — consumes dup probe + shared validation) or `feature/aws-auth` spike (top risk; OQ1 may cap progress). UI recommended while OQ1 is open.
-5. Server run config for dev: `ConnectionStrings__Default` + `ASPNETCORE_ENVIRONMENT=Development` + `AssetTracker__DevAuth=true`; dev principal via `X-Dev-UserId`/`X-Dev-Role`/`X-Dev-UnitId` headers (user row must exist in `app_user` for history FK).
+3. ~~Asset entry form~~ done 2026-07-06: `feature/asset-crud-ui` squash-merged (#13). Elmish/Feliz form validated by the SAME shared code as the server, debounced dup probe, GET `/session` bootstrap, make/model/type persist after save for batch entry. Dev identity injected by the **vite proxy** (`src/Client/.env.local`: `VITE_DEV_USER_ID`, `VITE_DEV_ROLE`, `VITE_DEV_UNIT_ID`) — never in app code. Client JSON coders are hand-written in `Api.fs` to mirror the server's STJ config exactly. Fable.Fetch pinned 2.* (no 3.x exists).
+4. **History reconciled 2026-07-06:** Daniel's PR #1 merge on GitHub was an older snapshot; local main kept via `-s ours` merge. Daniel: `git push origin main` (then delete remote `feature/asset-crud-api`).
+5. Next: `feature/aws-auth` spike (top risk; OQ1 may cap progress), or Squadron/Unit mgmt (#7 — entry form currently trusts the session's unit; a unit picker needs #7).
+6. Dev run: server `ConnectionStrings__Default` + `ASPNETCORE_ENVIRONMENT=Development` + `AssetTracker__DevAuth=true`; client `npm run dev` in src/Client (dev user row must exist in `app_user` for the history FK).
+7. Sandbox quirk: file-sync creates undeletable empty `* 2` ghost dirs (obj/, fable_modules/) that break fable/msbuild runs in the VM — fix is `rm -rf` of the parent from Daniel's machine; they're gitignored.
 
 ## Open items needing Daniel/sponsor
 
