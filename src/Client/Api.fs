@@ -144,7 +144,13 @@ let private call
                         HttpRequestHeaders.XRequestedWith "XMLHttpRequest" ]
                   yield! (body |> Option.map (Body << U3.Case3) |> Option.toList) ]
 
-            let! response = fetch url props |> Async.AwaitPromise
+            // GlobalFetch.fetch: the raw binding. (Fable.Fetch's `fetch` helper REJECTS
+            // on non-2xx, which would route 401/400/409 into the Network branch and
+            // lose the problem+json body.)
+            let! response =
+                GlobalFetch.fetch (RequestInfo.Url url, requestProps props)
+                |> Async.AwaitPromise
+
             let! text = response.text () |> Async.AwaitPromise
 
             if response.Ok then
